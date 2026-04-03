@@ -6,7 +6,10 @@
   <title>Sales Conversion - Growth OS</title>
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/agent.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
   <script src="../assets/js/ollama.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/agents/sales-closer.js"></script>
 </head>
 <body>
   <div class="layout">
@@ -153,22 +156,5 @@
     </main>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      buildModelSelector('model-selector-container');
-      window.chatMgr = new ChatManager('chat-container', 'chat-input', 'chat-send', 'sales');
-
-      const toggle = document.getElementById('sidebar-toggle');
-      if (window.innerWidth <= 768) toggle.style.display = 'block';
-      toggle.addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('open');
-      });
-    });
-
-    function genComparison() {
-      const comp = document.getElementById('comp-name').value || 'Competitor';
-      window.chatMgr.useQuickPrompt(`Generate a 3-point battlecard comparing our project against ${comp}. Focus on why our value proposition is superior for closing the deal.`);
-    }
-  </script>
 </body>
 </html>

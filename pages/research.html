@@ -6,7 +6,10 @@
   <title>Research Intel - Growth OS</title>
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/agent.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
   <script src="../assets/js/ollama.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/agents/market-research.js"></script>
 </head>
 <body>
   <div class="layout">
@@ -137,23 +140,5 @@
     </main>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      buildModelSelector('model-selector-container');
-      window.chatMgr = new ChatManager('chat-container', 'chat-input', 'chat-send', 'research');
-
-      const toggle = document.getElementById('sidebar-toggle');
-      if (window.innerWidth <= 768) toggle.style.display = 'block';
-      toggle.addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('open');
-      });
-    });
-
-    function runAnalysis() {
-      const loc = document.getElementById('research-location').value || 'a general area';
-      const seg = document.getElementById('research-segment').value;
-      window.chatMgr.useQuickPrompt(`Please run a comprehensive competitor analysis for the ${seg} segment in ${loc}. Include estimated per-sqft pricing and current supply vs demand.`);
-    }
-  </script>
 </body>
 </html>

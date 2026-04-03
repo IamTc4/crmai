@@ -7,7 +7,11 @@
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/agent.css">
   <link rel="stylesheet" href="../assets/css/crm.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
   <script src="../assets/js/ollama.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/crm.js"></script>
+  <script src="../assets/js/agents/followup-ai.js"></script>
 </head>
 <body>
   <div class="layout">
@@ -220,55 +224,5 @@
     </main>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      buildModelSelector('model-selector-container');
-      window.chatMgr = new ChatManager('chat-container', 'chat-input', 'chat-send', 'crm');
-
-      const toggle = document.getElementById('sidebar-toggle');
-      if (window.innerWidth <= 768) toggle.style.display = 'block';
-      toggle.addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('open');
-      });
-
-      // Simple drag and drop logic
-      const cards = document.querySelectorAll('.lead-card');
-      const cols = document.querySelectorAll('.kanban-col');
-
-      cards.forEach(card => {
-        card.addEventListener('dragstart', () => {
-          card.classList.add('dragging');
-        });
-        card.addEventListener('dragend', () => {
-          card.classList.remove('dragging');
-          // Update counts (mock)
-          toast('Pipeline stage updated', 'success');
-        });
-      });
-
-      cols.forEach(col => {
-        col.addEventListener('dragover', e => {
-          e.preventDefault();
-          col.classList.add('drag-over');
-          const dragging = document.querySelector('.dragging');
-          const cardsContainer = col.querySelector('.kanban-cards');
-          if (dragging && cardsContainer) cardsContainer.appendChild(dragging);
-        });
-        col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
-        col.addEventListener('drop', () => col.classList.remove('drag-over'));
-      });
-    });
-
-    function toggleAIChat() {
-      document.getElementById('ai-chat-sidebar').classList.toggle('open');
-    }
-
-    // Auto-open chat sidebar if a chat manager method is called via quick prompt
-    const originalUsePrompt = window.chatMgr.useQuickPrompt.bind(window.chatMgr);
-    window.chatMgr.useQuickPrompt = function(text) {
-      document.getElementById('ai-chat-sidebar').classList.add('open');
-      originalUsePrompt(text);
-    }
-  </script>
 </body>
 </html>
