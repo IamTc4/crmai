@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lead Generation - Growth OS</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/agent.css">
+  <script src="../assets/js/ollama.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">⚡</div>
+        <h2>Growth OS</h2>
+        <p>Real Estate Multi-Agent System</p>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Master</div>
+        <a href="../index.html" class="nav-item">
+          <div class="nav-icon">👑</div> Dashboard
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Departments</div>
+        <a href="marketing.html" class="nav-item">
+          <div class="nav-icon">📢</div> Marketing Engine
+        </a>
+        <a href="content.html" class="nav-item">
+          <div class="nav-icon">✍️</div> Content Engine
+        </a>
+        <a href="research.html" class="nav-item">
+          <div class="nav-icon">📊</div> Research Intel
+        </a>
+        <a href="leads.html" class="nav-item active" style="--dept-rgb: 220,38,38;">
+          <div class="nav-icon">🎯</div> Lead Generation
+        </a>
+        <a href="crm.html" class="nav-item">
+          <div class="nav-icon">🤝</div> CRM & Follow-up
+        </a>
+        <a href="sales.html" class="nav-item">
+          <div class="nav-icon">💰</div> Sales Conversion
+        </a>
+        <a href="analytics.html" class="nav-item">
+          <div class="nav-icon">📈</div> Performance
+        </a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
+          <div class="dept-label">
+            <div class="dept-dot" style="background:var(--dept-leads); box-shadow:0 0 8px var(--dept-leads)"></div>
+            Lead Generation
+          </div>
+        </div>
+        <div class="topbar-right" id="model-selector-container"></div>
+      </header>
+
+      <div class="page-content">
+        <div class="section-header">
+          <h1 class="section-title"><div class="icon" style="--accent: 220,38,38;">🎯</div> Lead Qualification AI</h1>
+        </div>
+
+        <div class="kpi-banner">
+          <div class="kpi-card" style="--kpi-color: var(--success)">
+            <div class="kpi-label">Hot Leads (Score 80+)</div>
+            <div class="kpi-value">12</div>
+            <div class="kpi-change kpi-up">Needs immediate call</div>
+          </div>
+          <div class="kpi-card" style="--kpi-color: var(--warning)">
+            <div class="kpi-label">Warm Leads (40-79)</div>
+            <div class="kpi-value">34</div>
+            <div class="kpi-change text-muted">In nurture sequence</div>
+          </div>
+          <div class="kpi-card" style="--kpi-color: var(--danger)">
+            <div class="kpi-label">Invalid/Fake Detected</div>
+            <div class="kpi-value">7</div>
+            <div class="kpi-change text-muted">Auto-filtered today</div>
+          </div>
+        </div>
+
+        <div class="agent-layout">
+          <!-- Lead Qualifier Chat -->
+          <div class="agent-chat-panel">
+            <div class="agent-chat-header">
+              <div class="agent-avatar" style="--accent: #DC2626; --accent2: #EF4444;">🎯</div>
+              <div class="agent-info">
+                <h4>Lead Qualification AI</h4>
+                <p>Intent scoring & fake lead filtering</p>
+              </div>
+            </div>
+
+            <div class="chat-messages" id="chat-container">
+              <div class="system-prompt-badge" style="background:rgba(220,38,38,0.15); border-color:rgba(220,38,38,0.25); color:#F87171;">
+                ⚙️ System Prompt: Lead scoring engine. Output structured JSON with score (0-100), segment (Hot/Warm/Cold), reasoning, and action. Flag fake numbers.
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar">🤖</div>
+                <div class="msg-bubble">I am actively monitoring incoming leads. Submit a lead's data, and I will instantly score their intent, filter out bots, and recommend the next action.</div>
+              </div>
+            </div>
+
+            <div class="chat-input-area">
+              <div class="quick-prompts">
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Score this lead: Name: Rahul, Source: Meta Ad, Budget: ₹1.2Cr, Timeline: Next 3 months, Behavior: Visited pricing page 4 times.')">Score Hot Lead</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Score this lead: Name: Test123, Phone: 9999999999, Budget: 0, Source: Organic.')">Test Bot Filter</button>
+              </div>
+              <div class="chat-input-row">
+                <textarea id="chat-input" class="chat-input" placeholder="Paste lead data here to score..."></textarea>
+                <button id="chat-send" class="chat-send-btn" style="background: var(--dept-leads);">➤</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Feed & Scoring -->
+          <div class="agent-side-panel">
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Live Intake Feed</h3>
+              <div class="flex-col gap-2">
+
+                <div class="p-2 border border-border rounded flex justify-between items-center bg-hover">
+                  <div>
+                    <div class="text-sm font-bold text-primary">Arjun Desai</div>
+                    <div class="text-xs text-muted">Source: Google Search</div>
+                  </div>
+                  <div class="flex-col items-end">
+                    <span class="badge badge-hot">Score: 92</span>
+                    <span class="text-xs text-success mt-1">Route to Sales</span>
+                  </div>
+                </div>
+
+                <div class="p-2 border border-border rounded flex justify-between items-center bg-hover">
+                  <div>
+                    <div class="text-sm font-bold text-primary">Neha S.</div>
+                    <div class="text-xs text-muted">Source: Meta Ad</div>
+                  </div>
+                  <div class="flex-col items-end">
+                    <span class="badge badge-warm">Score: 65</span>
+                    <span class="text-xs text-warning mt-1">Add to Drip</span>
+                  </div>
+                </div>
+
+                <div class="p-2 border border-border rounded flex justify-between items-center bg-hover opacity-50">
+                  <div>
+                    <div class="text-sm font-bold text-muted">Xyz Test</div>
+                    <div class="text-xs text-muted">Source: Direct</div>
+                  </div>
+                  <div class="flex-col items-end">
+                    <span class="badge badge-cold">Score: 12</span>
+                    <span class="text-xs text-danger mt-1">Blocked Bot</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Behavioral Scoring Rules</h3>
+              <div class="table-wrap">
+                <table>
+                  <tbody>
+                    <tr><td>Visited Pricing Page</td><td class="text-success font-bold">+20 pts</td></tr>
+                    <tr><td>Downloaded Brochure</td><td class="text-success font-bold">+25 pts</td></tr>
+                    <tr><td>Opted-in on WhatsApp</td><td class="text-success font-bold">+15 pts</td></tr>
+                    <tr><td>Fake Number Format</td><td class="text-danger font-bold">-100 pts</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      buildModelSelector('model-selector-container');
+      window.chatMgr = new ChatManager('chat-container', 'chat-input', 'chat-send', 'leads');
+
+      const toggle = document.getElementById('sidebar-toggle');
+      if (window.innerWidth <= 768) toggle.style.display = 'block';
+      toggle.addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM & Follow-up - Growth OS</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/agent.css">
+  <link rel="stylesheet" href="../assets/css/crm.css">
+  <script src="../assets/js/ollama.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">⚡</div>
+        <h2>Growth OS</h2>
+        <p>Real Estate Multi-Agent System</p>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Master</div>
+        <a href="../index.html" class="nav-item">
+          <div class="nav-icon">👑</div> Dashboard
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Departments</div>
+        <a href="marketing.html" class="nav-item">
+          <div class="nav-icon">📢</div> Marketing Engine
+        </a>
+        <a href="content.html" class="nav-item">
+          <div class="nav-icon">✍️</div> Content Engine
+        </a>
+        <a href="research.html" class="nav-item">
+          <div class="nav-icon">📊</div> Research Intel
+        </a>
+        <a href="leads.html" class="nav-item">
+          <div class="nav-icon">🎯</div> Lead Generation
+        </a>
+        <a href="crm.html" class="nav-item active" style="--dept-rgb: 22,163,74;">
+          <div class="nav-icon">🤝</div> CRM & Follow-up
+        </a>
+        <a href="sales.html" class="nav-item">
+          <div class="nav-icon">💰</div> Sales Conversion
+        </a>
+        <a href="analytics.html" class="nav-item">
+          <div class="nav-icon">📈</div> Performance
+        </a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
+          <div class="dept-label">
+            <div class="dept-dot" style="background:var(--dept-crm); box-shadow:0 0 8px var(--dept-crm)"></div>
+            CRM & Follow-up Automation
+          </div>
+        </div>
+        <div class="topbar-right" id="model-selector-container"></div>
+      </header>
+
+      <div class="page-content">
+        <div class="section-header">
+          <h1 class="section-title"><div class="icon" style="--accent: 22,163,74;">🤝</div> Follow-up AI Pipeline</h1>
+          <button class="btn btn-ghost" onclick="toggleAIChat()">💬 Toggle AI Assistant</button>
+        </div>
+
+        <!-- CRM Kanban Board -->
+        <div class="kanban-board" id="kanban-board">
+
+          <!-- Column 1 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div class="kanban-col-title">
+                <div><span class="kanban-stage-dot" style="background:#38bdf8"></span>New Lead</div>
+                <span class="kanban-count">2</span>
+              </div>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-add-card">+ Add Manual Lead</div>
+
+              <div class="lead-card" draggable="true" style="--card-accent:#38bdf8">
+                <div class="lead-card-header">
+                  <div>
+                    <div class="lead-card-name">Amit Sharma</div>
+                    <div class="lead-card-project">Interest: 3BHK, Pune</div>
+                  </div>
+                  <div class="badge badge-hot">92</div>
+                </div>
+                <div class="lead-card-value">Budget: ₹1.5Cr</div>
+                <div class="lead-card-meta">
+                  <span class="lead-card-tag bg-hover text-muted">Meta Ads</span>
+                </div>
+                <div class="lead-card-days">Arrived 2 hours ago</div>
+                <div class="lead-card-actions">
+                  <button onclick="window.chatMgr.useQuickPrompt('Generate a Day 1 WhatsApp introduction message for Amit Sharma, interested in 3BHK Pune, budget ₹1.5Cr.')">📱 Auto-WA</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div class="kanban-col-title">
+                <div><span class="kanban-stage-dot" style="background:#f59e0b"></span>Contacted</div>
+                <span class="kanban-count">1</span>
+              </div>
+            </div>
+            <div class="kanban-cards">
+              <div class="lead-card" draggable="true" style="--card-accent:#f59e0b">
+                <div class="lead-card-header">
+                  <div>
+                    <div class="lead-card-name">Priya Patel</div>
+                    <div class="lead-card-project">Interest: Villa, Bangalore</div>
+                  </div>
+                  <div class="badge badge-warm">65</div>
+                </div>
+                <div class="lead-card-value">Budget: ₹3Cr</div>
+                <div class="lead-card-days">Waiting for reply (Day 2)</div>
+                <div class="lead-card-actions">
+                  <button onclick="window.chatMgr.useQuickPrompt('Generate a polite follow-up email for Priya Patel (Villa, Bangalore, 3Cr) who hasn\'t replied since our intro 2 days ago.')">✉️ Follow-up</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div class="kanban-col-title">
+                <div><span class="kanban-stage-dot" style="background:#a855f7"></span>Interested</div>
+                <span class="kanban-count">0</span>
+              </div>
+            </div>
+            <div class="kanban-cards">
+              <!-- Empty -->
+            </div>
+          </div>
+
+          <!-- Column 4 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div class="kanban-col-title">
+                <div><span class="kanban-stage-dot" style="background:#10b981"></span>Visit Scheduled</div>
+                <span class="kanban-count">1</span>
+              </div>
+            </div>
+            <div class="kanban-cards">
+               <div class="lead-card" draggable="true" style="--card-accent:#10b981">
+                <div class="lead-card-header">
+                  <div>
+                    <div class="lead-card-name">Ravi Kumar</div>
+                    <div class="lead-card-project">Interest: 2BHK, Noida</div>
+                  </div>
+                  <div class="badge badge-hot">88</div>
+                </div>
+                <div class="lead-card-value text-muted" style="font-size:0.7rem">🗓️ Tomorrow, 11:00 AM</div>
+                <div class="lead-card-actions">
+                  <button>📍 Send Location</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 5 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div class="kanban-col-title">
+                <div><span class="kanban-stage-dot" style="background:#ef4444"></span>Negotiating</div>
+                <span class="kanban-count">0</span>
+              </div>
+            </div>
+            <div class="kanban-cards"></div>
+          </div>
+
+          <!-- Column 6 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div class="kanban-col-title">
+                <div><span class="kanban-stage-dot" style="background:#059669"></span>Closed Won</div>
+                <span class="kanban-count">0</span>
+              </div>
+            </div>
+            <div class="kanban-cards"></div>
+          </div>
+
+        </div>
+
+        <!-- Sliding AI Chat Panel -->
+        <div class="lead-detail-sidebar" id="ai-chat-sidebar">
+          <div class="sidebar-detail-header">
+            <h3 class="font-bold text-sm flex items-center gap-2"><span class="agent-avatar" style="width:24px;height:24px;font-size:0.8rem;--accent:#16A34A;--accent2:#22C55E">🤝</span> Follow-up AI</h3>
+            <button class="btn btn-icon" onclick="toggleAIChat()">✕</button>
+          </div>
+
+          <div class="chat-messages" id="chat-container" style="flex:1">
+            <div class="system-prompt-badge" style="background:rgba(22,163,74,0.15); border-color:rgba(22,163,74,0.25); color:#4ADE80;">
+              ⚙️ System Prompt: CRM automation AI. Generate personalized, natural-sounding follow-up messages for WA, Email, SMS.
+            </div>
+            <div class="msg ai">
+              <div class="msg-avatar">🤖</div>
+              <div class="msg-bubble">Select a lead from the board and click an action button, or ask me directly to draft a message!</div>
+            </div>
+          </div>
+
+          <div class="chat-input-area" style="border-top:1px solid var(--border)">
+             <div class="chat-input-row">
+              <textarea id="chat-input" class="chat-input" placeholder="Ask Follow-up AI..."></textarea>
+              <button id="chat-send" class="chat-send-btn" style="background: var(--dept-crm);">➤</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      buildModelSelector('model-selector-container');
+      window.chatMgr = new ChatManager('chat-container', 'chat-input', 'chat-send', 'crm');
+
+      const toggle = document.getElementById('sidebar-toggle');
+      if (window.innerWidth <= 768) toggle.style.display = 'block';
+      toggle.addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('open');
+      });
+
+      // Simple drag and drop logic
+      const cards = document.querySelectorAll('.lead-card');
+      const cols = document.querySelectorAll('.kanban-col');
+
+      cards.forEach(card => {
+        card.addEventListener('dragstart', () => {
+          card.classList.add('dragging');
+        });
+        card.addEventListener('dragend', () => {
+          card.classList.remove('dragging');
+          // Update counts (mock)
+          toast('Pipeline stage updated', 'success');
+        });
+      });
+
+      cols.forEach(col => {
+        col.addEventListener('dragover', e => {
+          e.preventDefault();
+          col.classList.add('drag-over');
+          const dragging = document.querySelector('.dragging');
+          const cardsContainer = col.querySelector('.kanban-cards');
+          if (dragging && cardsContainer) cardsContainer.appendChild(dragging);
+        });
+        col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
+        col.addEventListener('drop', () => col.classList.remove('drag-over'));
+      });
+    });
+
+    function toggleAIChat() {
+      document.getElementById('ai-chat-sidebar').classList.toggle('open');
+    }
+
+    // Auto-open chat sidebar if a chat manager method is called via quick prompt
+    const originalUsePrompt = window.chatMgr.useQuickPrompt.bind(window.chatMgr);
+    window.chatMgr.useQuickPrompt = function(text) {
+      document.getElementById('ai-chat-sidebar').classList.add('open');
+      originalUsePrompt(text);
+    }
+  </script>
+</body>
+</html>

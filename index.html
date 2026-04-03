@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Growth OS - Master Dashboard</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/agent.css">
+  <script src="assets/js/ollama.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">⚡</div>
+        <h2>Growth OS</h2>
+        <p>Real Estate Multi-Agent System</p>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Master</div>
+        <a href="index.html" class="nav-item active" style="--dept-rgb: 124,58,237;">
+          <div class="nav-icon">👑</div> Dashboard
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Departments</div>
+        <a href="pages/marketing.html" class="nav-item">
+          <div class="nav-icon">📢</div> Marketing Engine
+        </a>
+        <a href="pages/content.html" class="nav-item">
+          <div class="nav-icon">✍️</div> Content Engine
+        </a>
+        <a href="pages/research.html" class="nav-item">
+          <div class="nav-icon">📊</div> Research Intel
+        </a>
+        <a href="pages/leads.html" class="nav-item">
+          <div class="nav-icon">🎯</div> Lead Generation
+        </a>
+        <a href="pages/crm.html" class="nav-item">
+          <div class="nav-icon">🤝</div> CRM & Follow-up
+        </a>
+        <a href="pages/sales.html" class="nav-item">
+          <div class="nav-icon">💰</div> Sales Conversion
+        </a>
+        <a href="pages/analytics.html" class="nav-item">
+          <div class="nav-icon">📈</div> Performance
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
+          <div class="dept-label">
+            <div class="dept-dot"></div>
+            Master Orchestrator
+          </div>
+        </div>
+        <div class="topbar-right" id="model-selector-container">
+          <!-- Model selector will be injected here -->
+        </div>
+      </header>
+
+      <div class="page-content">
+        <!-- KPI Banner -->
+        <div class="kpi-banner">
+          <div class="kpi-card" style="--kpi-color: var(--dept-marketing)">
+            <div class="kpi-label">Active Campaigns</div>
+            <div class="kpi-value">12</div>
+            <div class="kpi-change kpi-up">↑ 2 from last week</div>
+            <div class="kpi-icon">📢</div>
+          </div>
+          <div class="kpi-card" style="--kpi-color: var(--dept-leads)">
+            <div class="kpi-label">Leads Today</div>
+            <div class="kpi-value">48</div>
+            <div class="kpi-change kpi-up">↑ 15% vs avg</div>
+            <div class="kpi-icon">🎯</div>
+          </div>
+          <div class="kpi-card" style="--kpi-color: var(--dept-sales)">
+            <div class="kpi-label">Site Visits Scheduled</div>
+            <div class="kpi-value">8</div>
+            <div class="kpi-change kpi-down">↓ 1 from yesterday</div>
+            <div class="kpi-icon">📅</div>
+          </div>
+          <div class="kpi-card" style="--kpi-color: var(--dept-analytics)">
+            <div class="kpi-label">Avg. CPL (₹)</div>
+            <div class="kpi-value">₹340</div>
+            <div class="kpi-change kpi-up">↓ 5% (Improving)</div>
+            <div class="kpi-icon">💸</div>
+          </div>
+        </div>
+
+        <div class="agent-layout">
+          <!-- Master Orchestrator Chat -->
+          <div class="agent-chat-panel">
+            <div class="agent-chat-header">
+              <div class="agent-avatar">👑</div>
+              <div class="agent-info">
+                <h4>Master Orchestrator</h4>
+                <p>System routing & high-level queries</p>
+              </div>
+            </div>
+
+            <div class="chat-messages" id="chat-container">
+              <div class="msg ai">
+                <div class="msg-avatar">🤖</div>
+                <div class="msg-bubble">Hello. I am the Master Orchestrator. I coordinate all 7 departments of your Growth OS. How can I assist you today?</div>
+              </div>
+            </div>
+
+            <div class="chat-input-area">
+              <div class="quick-prompts">
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Give me a full system status report.')">System Report</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Route me to the best agent for setting up a new Meta ad campaign.')">Setup Ad Campaign</button>
+              </div>
+              <div class="chat-input-row">
+                <textarea id="chat-input" class="chat-input" placeholder="Ask the Orchestrator..."></textarea>
+                <button id="chat-send" class="chat-send-btn">➤</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Architecture Overview Panel -->
+          <div class="agent-side-panel">
+            <div class="card" style="flex:1">
+              <div class="section-header">
+                <div class="section-title">
+                  <div class="icon" style="--accent: 124,58,237;">🏛️</div>
+                  System Architecture
+                </div>
+              </div>
+              <p class="text-sm mb-4">Click any department to jump to its dedicated dashboard.</p>
+
+              <div style="display:flex; flex-direction:column; gap:0.5rem">
+                <a href="pages/marketing.html" class="card" style="padding:0.75rem; border-left:3px solid var(--dept-marketing); display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div class="font-bold text-sm">1. Marketing Engine</div>
+                    <div class="text-xs text-muted">Ad Strategist AI</div>
+                  </div>
+                  <span>→</span>
+                </a>
+                <a href="pages/content.html" class="card" style="padding:0.75rem; border-left:3px solid var(--dept-content); display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div class="font-bold text-sm">2. Content Engine</div>
+                    <div class="text-xs text-muted">Content Creator AI</div>
+                  </div>
+                  <span>→</span>
+                </a>
+                <a href="pages/research.html" class="card" style="padding:0.75rem; border-left:3px solid var(--dept-research); display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div class="font-bold text-sm">3. Research Intel</div>
+                    <div class="text-xs text-muted">Market Research AI</div>
+                  </div>
+                  <span>→</span>
+                </a>
+                <a href="pages/leads.html" class="card" style="padding:0.75rem; border-left:3px solid var(--dept-leads); display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div class="font-bold text-sm">4. Lead Generation</div>
+                    <div class="text-xs text-muted">Lead Qualifier AI</div>
+                  </div>
+                  <span>→</span>
+                </a>
+                <a href="pages/crm.html" class="card" style="padding:0.75rem; border-left:3px solid var(--dept-crm); display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div class="font-bold text-sm">5. CRM & Follow-up</div>
+                    <div class="text-xs text-muted">Follow-up AI</div>
+                  </div>
+                  <span>→</span>
+                </a>
+                <a href="pages/sales.html" class="card" style="padding:0.75rem; border-left:3px solid var(--dept-sales); display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div class="font-bold text-sm">6. Sales Conversion</div>
+                    <div class="text-xs text-muted">Sales Closer AI</div>
+                  </div>
+                  <span>→</span>
+                </a>
+                <a href="pages/analytics.html" class="card" style="padding:0.75rem; border-left:3px solid var(--dept-analytics); display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div class="font-bold text-sm">7. Performance Tracking</div>
+                    <div class="text-xs text-muted">Analytics AI</div>
+                  </div>
+                  <span>→</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      buildModelSelector('model-selector-container');
+      window.chatMgr = new ChatManager('chat-container', 'chat-input', 'chat-send', 'orchestrator');
+
+      // Simple sidebar toggle for mobile
+      const toggle = document.getElementById('sidebar-toggle');
+      if (window.innerWidth <= 768) toggle.style.display = 'block';
+      toggle.addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>
