@@ -6,7 +6,10 @@
   <title>Content Engine - Growth OS</title>
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/agent.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
   <script src="../assets/js/ollama.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/agents/content-creator.js"></script>
 </head>
 <body>
   <div class="layout">
@@ -164,24 +167,5 @@
     </main>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      buildModelSelector('model-selector-container');
-      window.chatMgr = new ChatManager('chat-container', 'chat-input', 'chat-send', 'content');
-
-      const toggle = document.getElementById('sidebar-toggle');
-      if (window.innerWidth <= 768) toggle.style.display = 'block';
-      toggle.addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('open');
-      });
-    });
-
-    function generateQuickContent() {
-      const type = document.getElementById('content-type').value;
-      const topic = document.getElementById('content-topic').value;
-      if (!topic) return toast('Please enter a topic', 'warning');
-      window.chatMgr.useQuickPrompt(`Write a ${type} about: ${topic}. Include a strong hook, body, and CTA.`);
-    }
-  </script>
 </body>
 </html>
