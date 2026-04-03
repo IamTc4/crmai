@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research Intel - Growth OS</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/agent.css">
+  <script src="../assets/js/ollama.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">⚡</div>
+        <h2>Growth OS</h2>
+        <p>Real Estate Multi-Agent System</p>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Master</div>
+        <a href="../index.html" class="nav-item">
+          <div class="nav-icon">👑</div> Dashboard
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Departments</div>
+        <a href="marketing.html" class="nav-item">
+          <div class="nav-icon">📢</div> Marketing Engine
+        </a>
+        <a href="content.html" class="nav-item">
+          <div class="nav-icon">✍️</div> Content Engine
+        </a>
+        <a href="research.html" class="nav-item active" style="--dept-rgb: 217,119,6;">
+          <div class="nav-icon">📊</div> Research Intel
+        </a>
+        <a href="leads.html" class="nav-item">
+          <div class="nav-icon">🎯</div> Lead Generation
+        </a>
+        <a href="crm.html" class="nav-item">
+          <div class="nav-icon">🤝</div> CRM & Follow-up
+        </a>
+        <a href="sales.html" class="nav-item">
+          <div class="nav-icon">💰</div> Sales Conversion
+        </a>
+        <a href="analytics.html" class="nav-item">
+          <div class="nav-icon">📈</div> Performance
+        </a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
+          <div class="dept-label">
+            <div class="dept-dot" style="background:var(--dept-research); box-shadow:0 0 8px var(--dept-research)"></div>
+            Research Intelligence
+          </div>
+        </div>
+        <div class="topbar-right" id="model-selector-container"></div>
+      </header>
+
+      <div class="page-content">
+        <div class="section-header">
+          <h1 class="section-title"><div class="icon" style="--accent: 217,119,6;">📊</div> Market Research AI</h1>
+        </div>
+
+        <div class="agent-layout">
+          <!-- Market Research Chat -->
+          <div class="agent-chat-panel">
+            <div class="agent-chat-header">
+              <div class="agent-avatar" style="--accent: #D97706; --accent2: #F59E0B;">📊</div>
+              <div class="agent-info">
+                <h4>Market Research AI</h4>
+                <p>Competitor intel & demand forecasting</p>
+              </div>
+            </div>
+
+            <div class="chat-messages" id="chat-container">
+              <div class="system-prompt-badge" style="background:rgba(217,119,6,0.15); border-color:rgba(217,119,6,0.25); color:#FBBF24;">
+                ⚙️ System Prompt: Real estate market analyst. Track competitor pricing, generate buyer personas, and provide data-backed market reports for Indian cities.
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar">🤖</div>
+                <div class="msg-bubble">I monitor micro-market trends and competitor data. Would you like a pricing analysis for a specific locality or to generate a new buyer persona?</div>
+              </div>
+            </div>
+
+            <div class="chat-input-area">
+              <div class="quick-prompts">
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Give me a micro-market demand report for 2BHKs in Whitefield, Bangalore.')">Whitefield Market Report</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Generate 3 buyer personas for a luxury retirement community project in Pune.')">Generate Buyer Personas</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Analyze the pricing strategy of top 3 competing projects near our upcoming launch in Noida Sector 150.')">Competitor Pricing Analysis</button>
+              </div>
+              <div class="chat-input-row">
+                <textarea id="chat-input" class="chat-input" placeholder="Ask Market Research AI..."></textarea>
+                <button id="chat-send" class="chat-send-btn" style="background: var(--dept-research);">➤</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analysis Tools -->
+          <div class="agent-side-panel">
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Micro-Market Demand Heatmap</h3>
+              <div style="height:150px; background:linear-gradient(45deg, rgba(217,119,6,0.1), rgba(220,38,38,0.2)); border-radius:var(--radius-sm); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:0.8rem">
+                [Map Visualization Placeholder]
+              </div>
+              <div class="flex justify-between mt-2 text-xs font-bold">
+                <span class="text-success">High Demand Zone</span>
+                <span class="text-danger">Oversupplied</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Run Competitor Analysis</h3>
+              <div class="field mb-3">
+                <label>Micro-Market Location</label>
+                <input type="text" id="research-location" placeholder="e.g. Gurgaon Golf Course Ext.">
+              </div>
+              <div class="field mb-3">
+                <label>Property Segment</label>
+                <select id="research-segment">
+                  <option>Affordable (< ₹50L)</option>
+                  <option>Mid-Segment (₹50L - ₹1.5Cr)</option>
+                  <option>Premium (₹1.5Cr - ₹3Cr)</option>
+                  <option>Luxury (> ₹3Cr)</option>
+                </select>
+              </div>
+              <button class="btn btn-primary w-full justify-center" style="background: var(--dept-research);" onclick="runAnalysis()">Generate Intel Report</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      buildModelSelector('model-selector-container');
+      window.chatMgr = new ChatManager('chat-container', 'chat-input', 'chat-send', 'research');
+
+      const toggle = document.getElementById('sidebar-toggle');
+      if (window.innerWidth <= 768) toggle.style.display = 'block';
+      toggle.addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('open');
+      });
+    });
+
+    function runAnalysis() {
+      const loc = document.getElementById('research-location').value || 'a general area';
+      const seg = document.getElementById('research-segment').value;
+      window.chatMgr.useQuickPrompt(`Please run a comprehensive competitor analysis for the ${seg} segment in ${loc}. Include estimated per-sqft pricing and current supply vs demand.`);
+    }
+  </script>
+</body>
+</html>

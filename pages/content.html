@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Engine - Growth OS</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/agent.css">
+  <script src="../assets/js/ollama.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">⚡</div>
+        <h2>Growth OS</h2>
+        <p>Real Estate Multi-Agent System</p>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Master</div>
+        <a href="../index.html" class="nav-item">
+          <div class="nav-icon">👑</div> Dashboard
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Departments</div>
+        <a href="marketing.html" class="nav-item">
+          <div class="nav-icon">📢</div> Marketing Engine
+        </a>
+        <a href="content.html" class="nav-item active" style="--dept-rgb: 5,150,105;">
+          <div class="nav-icon">✍️</div> Content Engine
+        </a>
+        <a href="research.html" class="nav-item">
+          <div class="nav-icon">📊</div> Research Intel
+        </a>
+        <a href="leads.html" class="nav-item">
+          <div class="nav-icon">🎯</div> Lead Generation
+        </a>
+        <a href="crm.html" class="nav-item">
+          <div class="nav-icon">🤝</div> CRM & Follow-up
+        </a>
+        <a href="sales.html" class="nav-item">
+          <div class="nav-icon">💰</div> Sales Conversion
+        </a>
+        <a href="analytics.html" class="nav-item">
+          <div class="nav-icon">📈</div> Performance
+        </a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
+          <div class="dept-label">
+            <div class="dept-dot" style="background:var(--dept-content); box-shadow:0 0 8px var(--dept-content)"></div>
+            Content Engine
+          </div>
+        </div>
+        <div class="topbar-right" id="model-selector-container"></div>
+      </header>
+
+      <div class="page-content">
+        <div class="section-header">
+          <h1 class="section-title"><div class="icon" style="--accent: 5,150,105;">✍️</div> Content Creator AI</h1>
+        </div>
+
+        <!-- 4-Employee Pipeline Viz -->
+        <div class="card mb-4">
+          <h3 class="font-semibold text-sm mb-3">AI Pipeline Status</h3>
+          <div style="display:flex; justify-content:space-between; position:relative;">
+            <div style="position:absolute; top:24px; left:10%; right:10%; height:2px; background:var(--border); z-index:1;"></div>
+
+            <div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem; position:relative; z-index:2; flex:1">
+              <div style="width:48px; height:48px; border-radius:50%; background:rgba(5,150,105,0.2); border:2px solid var(--dept-content); display:flex; align-items:center; justify-content:center; font-size:1.2rem">🔍</div>
+              <div class="text-xs font-bold">1. Trend Researcher</div>
+              <div class="badge badge-success" style="font-size:0.6rem">Done</div>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem; position:relative; z-index:2; flex:1">
+              <div style="width:48px; height:48px; border-radius:50%; background:rgba(5,150,105,0.2); border:2px solid var(--dept-content); display:flex; align-items:center; justify-content:center; font-size:1.2rem">📅</div>
+              <div class="text-xs font-bold">2. Strategist</div>
+              <div class="badge badge-success" style="font-size:0.6rem">Done</div>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem; position:relative; z-index:2; flex:1">
+              <div style="width:48px; height:48px; border-radius:50%; background:var(--bg-card); border:2px dashed var(--dept-content); display:flex; align-items:center; justify-content:center; font-size:1.2rem">✍️</div>
+              <div class="text-xs font-bold text-primary">3. Script Writer</div>
+              <div class="badge badge-info" style="font-size:0.6rem"><span class="live-dot" style="width:5px;height:5px"></span> Active</div>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem; position:relative; z-index:2; flex:1">
+              <div style="width:48px; height:48px; border-radius:50%; background:var(--bg-card); border:2px dashed var(--border-light); display:flex; align-items:center; justify-content:center; font-size:1.2rem; opacity:0.5">📈</div>
+              <div class="text-xs font-bold text-muted">4. Analyst</div>
+              <div class="badge" style="font-size:0.6rem; background:var(--bg-hover)">Waiting</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="agent-layout">
+          <!-- Content Creator Chat -->
+          <div class="agent-chat-panel">
+            <div class="agent-chat-header">
+              <div class="agent-avatar" style="--accent: #059669; --accent2: #10B981;">✍️</div>
+              <div class="agent-info">
+                <h4>Content Creator AI</h4>
+                <p>Pipeline Stage: Script Writing & Generation</p>
+              </div>
+            </div>
+
+            <div class="chat-messages" id="chat-container">
+              <div class="system-prompt-badge" style="background:rgba(5,150,105,0.15); border-color:rgba(5,150,105,0.25); color:#34D399;">
+                ⚙️ System Prompt: Real estate content specialist. Create viral reels, captions, and email sequences. Aspirational tone, avoid desperate salesy language.
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar">🤖</div>
+                <div class="msg-bubble">I've received the trend report and strategy for this week. Would you like me to generate a 30-day content calendar, or do you want a specific reel script right now?</div>
+              </div>
+            </div>
+
+            <div class="chat-input-area">
+              <div class="quick-prompts">
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Generate a 30-day content calendar for a new villa project launch in Bangalore.')">30-Day Calendar</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Write a 60-second Instagram Reel script highlighting the 15% ROI for investors in our commercial property.')">Write Reel Script</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Repurpose our latest blog post about Home Loan rates into 3 engaging Twitter threads.')">Repurpose Blog</button>
+              </div>
+              <div class="chat-input-row">
+                <textarea id="chat-input" class="chat-input" placeholder="Ask Content Creator AI..."></textarea>
+                <button id="chat-send" class="chat-send-btn" style="background: var(--dept-content);">➤</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Generation Tools -->
+          <div class="agent-side-panel">
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Quick Script Generator</h3>
+              <div class="field mb-3">
+                <label>Content Type</label>
+                <select id="content-type">
+                  <option value="Instagram Reel">Instagram Reel (60s)</option>
+                  <option value="Email Newsletter">Email Newsletter</option>
+                  <option value="LinkedIn Post">LinkedIn Post</option>
+                  <option value="WhatsApp Broadcast">WhatsApp Broadcast</option>
+                </select>
+              </div>
+              <div class="field mb-3">
+                <label>Topic / Angle</label>
+                <input type="text" id="content-topic" placeholder="e.g. Club house amenities tour">
+              </div>
+              <button class="btn btn-primary w-full justify-center" style="background: var(--dept-content);" onclick="generateQuickContent()">Generate Script</button>
+            </div>
+
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Trending Hooks (Real Estate)</h3>
+              <div class="flex-col gap-2">
+                <div class="p-2 bg-hover rounded text-xs border border-border">🔥 "Stop buying 2BHKs in [City] until you see this..."</div>
+                <div class="p-2 bg-hover rounded text-xs border border-border">🔥 "The 3 things builders don't want you to know about RERA."</div>
+                <div class="p-2 bg-hover rounded text-xs border border-border">🔥 "Why rent when your EMI can be exactly the same?"</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      buildModelSelector('model-selector-container');
+      window.chatMgr = new ChatManager('chat-container', 'chat-input', 'chat-send', 'content');
+
+      const toggle = document.getElementById('sidebar-toggle');
+      if (window.innerWidth <= 768) toggle.style.display = 'block';
+      toggle.addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('open');
+      });
+    });
+
+    function generateQuickContent() {
+      const type = document.getElementById('content-type').value;
+      const topic = document.getElementById('content-topic').value;
+      if (!topic) return toast('Please enter a topic', 'warning');
+      window.chatMgr.useQuickPrompt(`Write a ${type} about: ${topic}. Include a strong hook, body, and CTA.`);
+    }
+  </script>
+</body>
+</html>
