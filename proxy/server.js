@@ -1,0 +1,114 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const axios = require('axios');
+const rateLimit = require('express-rate-limit');
+const jwt = require('jsonwebtoken');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_key_change_in_production';
+
+// System prompts for AI agents (duplicated from frontend for backend security/enforcement)
+const SYSTEM_PROMPTS = {
+  orchestrator: `You are the Master Orchestrator of a real estate Growth OS. You coordinate 7 specialized AI agents: Ad Strategist, Content Creator, Market Research, Lead Qualifier, CRM Follow-up, Sales Closer, and Analytics AI. Route user queries to the right department. Be concise, strategic, and decisive. When appropriate, explain which agent you're engaging and why. Focus on Indian real estate market context.`,
+  marketing: `You are an expert real estate digital marketing strategist specializing in the Indian market. You create data-driven ad campaigns for real estate builders on Meta, Google, Instagram, and YouTube. You analyze campaign performance, generate compelling ad copy, suggest budget allocation, and identify competitor strategies. Always output structured recommendations with specific metrics and actionable next steps. Respond with ad variants, targeting suggestions, and performance benchmarks.`,
+  content: `You are a real estate content creation specialist. You produce viral reels scripts, engaging captions, blog posts, email sequences, and WhatsApp broadcasts for real estate builders. You understand buyer psychology, property showcase techniques, and platform algorithms. Generate content that converts browsers into leads. Always tailor content to the specific project, location, and target demographic provided.`,
+  research: `You are a real estate market research analyst with deep expertise in Indian residential and commercial properties. You analyze micro-markets, track competitor pricing and strategies, generate buyer personas, and identify demand trends. Provide structured reports with data tables, competitive intelligence, and market forecasting. Use realistic Indian city data (Mumbai, Pune, Bangalore, Hyderabad, etc.).`,
+  leads: `You are an AI lead qualification engine for real estate. Score leads 0-100 based on: budget alignment (30pts), purchase timeline (25pts), intent signals (25pts), location match (20pts). Output structured JSON with score, segment (Hot/Warm/Cold), reasoning, and recommended next action. Flag suspicious patterns like duplicate numbers or out-of-range budgets. Be decisive and specific.`,
+  crm: `You are a real estate CRM and follow-up automation AI. Generate personalized follow-up messages via WhatsApp, Email, SMS, and call scripts. Adapt tone based on lead temperature and stage (New/Contacted/Interested/Visit Scheduled/Negotiating/Closing). Reference the lead's specific project interest, budget, and last touchpoint. Keep messages natural, warm, and conversion-focused.`,
+  sales: `You are an elite real estate sales coach specializing in closing high-value property deals. Handle buyer objections about price, location, project delays, builder reputation, and competition. Provide proven closing scripts, handle price negotiations, and generate pre-call briefings. You understand Indian buyer psychology deeply — family dynamics, investment mindset, EMI sensitivity. Be direct, confident, and effective.`,
+  analytics: `You are a real estate performance analytics AI. Analyze campaign data, lead funnels, sales conversion metrics, and ROI across channels. Generate insights on what's working, what's not, and where to reallocate budget. Produce weekly performance narratives, identify anomalies, and make data-backed recommendations. Reference specific metrics: CPL, conversion rates, ROAS, lead velocity, and pipeline value.`,
+};
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Rate Limiting (5 requests per minute)
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: { error: 'Rate limit exceeded. Please try again in a minute.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Authentication Middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token == null) return res.status(401).json({error: 'Unauthorized'});
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({error: 'Forbidden'});
+    req.user = user;
+    next();
+  });
+};
+
+// Routes
+app.get('/api/status', (req, res) => {
+  res.json({ status: 'online', message: 'API Proxy is running' });
+});
+
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  // Basic hardcoded auth for demo
+  if (username === 'admin' && password === 'admin') {
+    const token = jwt.sign({ username: 'admin', role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
+    res.json({ token });
+  } else {
+    res.status(401).json({ error: 'Invalid credentials' });
+  }
+});
+
+app.post('/api/chat', apiLimiter, authenticateToken, async (req, res) => {
+  try {
+    const { agentType, message, history, model } = req.body;
+
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    const systemPrompt = SYSTEM_PROMPTS[agentType] || SYSTEM_PROMPTS.orchestrator;
+
+    // Construct messages array
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...(history || []),
+      { role: 'user', content: message }
+    ];
+
+    // Connect to local Ollama instance (or Claude API in production)
+    const OLLAMA_BASE = process.env.OLLAMA_BASE || 'http://127.0.0.1:11434';
+
+    const response = await axios({
+      method: 'post',
+      url: `${OLLAMA_BASE}/api/chat`,
+      data: {
+        model: model || 'llama3.2',
+        messages,
+        stream: true,
+        options: { temperature: 0.7 }
+      },
+      responseType: 'stream'
+    });
+
+    res.setHeader('Content-Type', 'application/json');
+    response.data.pipe(res);
+
+  } catch (error) {
+    console.error('Chat API Error:', error.message);
+    if (error.code === 'ECONNREFUSED') {
+      res.status(503).json({ error: 'Local AI service (Ollama) is not running.' });
+    } else {
+      res.status(500).json({ error: 'Failed to process chat request' });
+    }
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Proxy server running on port ${PORT}`);
+});

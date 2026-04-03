@@ -1,6 +1,17 @@
 // app.js - Global App Logic & State Management
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Check Authentication (except on login page)
+    if (!window.location.pathname.endsWith('login.html')) {
+        const token = localStorage.getItem('jwt_token');
+        if (!token) {
+            // Adjust path based on current directory depth
+            const pathPrefix = window.location.pathname.includes('/pages/') ? '../' : '';
+            window.location.href = `${pathPrefix}login.html`;
+            return; // Stop execution
+        }
+    }
+
     // Initialize Model Selector if container exists
     const modelContainer = document.getElementById('model-selector-container');
     if (modelContainer && typeof buildModelSelector === 'function') {

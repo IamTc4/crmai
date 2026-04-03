@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/agent.css">
   <link rel="stylesheet" href="../assets/css/dashboard.css">
-  <script src="../assets/js/ollama.js"></script>
+  <script src="../assets/js/api.js"></script>
   <script src="../assets/js/app.js"></script>
   <script src="../assets/js/agents/market-research.js"></script>
 </head>
@@ -56,6 +56,7 @@
     <main class="main">
       <header class="topbar">
         <div class="topbar-left">
+            <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
           <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
           <div class="dept-label">
             <div class="dept-dot" style="background:var(--dept-research); box-shadow:0 0 8px var(--dept-research)"></div>
@@ -117,23 +118,24 @@
               </div>
             </div>
 
-            <div class="card">
+            <form class="card" onsubmit="event.preventDefault(); runAnalysis();">
               <h3 class="mb-3 font-semibold text-sm">Run Competitor Analysis</h3>
               <div class="field mb-3">
-                <label>Micro-Market Location</label>
-                <input type="text" id="research-location" placeholder="e.g. Gurgaon Golf Course Ext.">
+                <label>Micro-Market Location <span class="text-danger">*</span></label>
+                <input type="text" id="research-location" required minlength="3" placeholder="e.g. Gurgaon Golf Course Ext.">
               </div>
               <div class="field mb-3">
-                <label>Property Segment</label>
-                <select id="research-segment">
-                  <option>Affordable (< ₹50L)</option>
-                  <option>Mid-Segment (₹50L - ₹1.5Cr)</option>
-                  <option>Premium (₹1.5Cr - ₹3Cr)</option>
-                  <option>Luxury (> ₹3Cr)</option>
+                <label>Property Segment <span class="text-danger">*</span></label>
+                <select id="research-segment" required>
+                  <option value="">Select Segment</option>
+                  <option value="Affordable">Affordable (< ₹50L)</option>
+                  <option value="Mid-Segment">Mid-Segment (₹50L - ₹1.5Cr)</option>
+                  <option value="Premium">Premium (₹1.5Cr - ₹3Cr)</option>
+                  <option value="Luxury">Luxury (> ₹3Cr)</option>
                 </select>
               </div>
-              <button class="btn btn-primary w-full justify-center" style="background: var(--dept-research);" onclick="runAnalysis()">Generate Intel Report</button>
-            </div>
+              <button type="submit" class="btn btn-primary w-full justify-center" style="background: var(--dept-research);">Generate Intel Report</button>
+            </form>
           </div>
         </div>
       </div>
