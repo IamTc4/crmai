@@ -1,0 +1,210 @@
+/* ── CRM Kanban Pipeline ─────────────────────────────────────────── */
+
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(220px, 1fr));
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  min-height: 500px;
+}
+
+.kanban-col {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+  transition: border-color var(--transition);
+}
+.kanban-col.drag-over {
+  border-color: var(--accent, #7C3AED);
+  background: rgba(var(--accent-rgb, 124,58,237), 0.05);
+}
+
+.kanban-col-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.kanban-col-title {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.82rem; font-weight: 700;
+}
+
+.kanban-stage-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.4rem;
+}
+
+.kanban-col-stats {
+  display: flex; gap: 0.5rem;
+  font-size: 0.72rem; color: var(--text-muted);
+}
+.kanban-col-stats span { display: flex; align-items: center; gap: 0.2rem; }
+
+.kanban-count {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.kanban-cards {
+  flex: 1;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+}
+
+/* Lead Card */
+.lead-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  cursor: grab;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.25s ease;
+}
+.lead-card:hover {
+  border-color: var(--border-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+.lead-card.dragging {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+.lead-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0;
+  width: 3px; height: 100%;
+  background: var(--card-accent, #7C3AED);
+}
+
+.lead-card-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.lead-card-name { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); }
+.lead-card-project { font-size: 0.72rem; color: var(--text-muted); }
+
+.lead-card-value {
+  font-size: 0.78rem; font-weight: 700;
+  color: var(--success);
+  white-space: nowrap;
+}
+
+.lead-card-meta {
+  display: flex; gap: 0.4rem; flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+.lead-card-tag {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.lead-card-days {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+}
+
+.lead-card-actions {
+  display: flex; gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+.lead-card-actions button {
+  flex: 1;
+  padding: 0.3rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex; align-items: center; justify-content: center; gap: 0.25rem;
+  font-family: 'Inter', sans-serif;
+}
+.lead-card-actions button:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+
+/* Lead Detail Sidebar */
+.lead-detail-sidebar {
+  position: fixed; top: 0; right: 0;
+  width: 380px; height: 100vh;
+  background: var(--bg-surface);
+  border-left: 1px solid var(--border);
+  z-index: 300;
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform var(--transition-slow);
+  overflow-y: auto;
+}
+.lead-detail-sidebar.open { transform: translateX(0); }
+
+.sidebar-detail-header {
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.timeline-entry {
+  display: flex; gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-left: 1px solid var(--border);
+  margin-left: 0.5rem;
+  padding-left: 1rem;
+  position: relative;
+}
+.timeline-entry::before {
+  content: '';
+  position: absolute; left: -5px; top: 0.75rem;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--accent, #7C3AED);
+  border: 2px solid var(--bg-surface);
+}
+.timeline-entry:last-child { border-left-color: transparent; }
+
+/* Add lead drop zone */
+.kanban-add-card {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 0.6rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+  margin: 0 0.5rem 0.5rem;
+}
+.kanban-add-card:hover {
+  border-color: var(--accent, #7C3AED);
+  color: #a78bfa;
+  background: rgba(124,58,237,0.05);
+}
