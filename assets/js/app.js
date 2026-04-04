@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const role = localStorage.getItem('user_role');
         if (role === 'sales') {
             // Sales shouldn't see Analytics or Marketing
-            const analyticsNav = document.querySelector('a[href*="analytics.html"]');
-            if (analyticsNav) analyticsNav.style.display = 'none';
-            const marketingNav = document.querySelector('a[href*="marketing.html"]');
-            if (marketingNav) marketingNav.style.display = 'none';
+            const analyticsNavs = document.querySelectorAll('a[href*="analytics.html"]');
+            analyticsNavs.forEach(nav => nav.style.display = 'none');
+            const marketingNavs = document.querySelectorAll('a[href*="marketing.html"]');
+            marketingNavs.forEach(nav => nav.style.display = 'none');
 
             // Redirect if trying to access restricted pages directly
             if (window.location.pathname.includes('analytics.html') || window.location.pathname.includes('marketing.html')) {

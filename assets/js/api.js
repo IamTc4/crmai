@@ -3,7 +3,7 @@
  * Handles model selection, streaming chat, and connection status
  */
 
-const PROXY_BASE = 'http://localhost:3000';
+const PROXY_BASE = window.CONFIG ? window.CONFIG.API_BASE : 'http://localhost:3000';
 
 const MODELS = [
   { id: 'llama3.2',     label: 'Llama 3.2',     icon: '🦙' },
