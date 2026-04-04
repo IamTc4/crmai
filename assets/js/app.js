@@ -10,6 +10,21 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = `${pathPrefix}login.html`;
             return; // Stop execution
         }
+
+        // Basic Access Control (Hide UI elements based on role)
+        const role = localStorage.getItem('user_role');
+        if (role === 'sales') {
+            // Sales shouldn't see Analytics or Marketing
+            const analyticsNav = document.querySelector('a[href*="analytics.html"]');
+            if (analyticsNav) analyticsNav.style.display = 'none';
+            const marketingNav = document.querySelector('a[href*="marketing.html"]');
+            if (marketingNav) marketingNav.style.display = 'none';
+
+            // Redirect if trying to access restricted pages directly
+            if (window.location.pathname.includes('analytics.html') || window.location.pathname.includes('marketing.html')) {
+                window.location.href = 'crm.html';
+            }
+        }
     }
 
     // Initialize Model Selector if container exists

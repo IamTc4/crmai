@@ -1,16 +1,19 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const axios = require('axios');
+const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const jwt = require('jsonwebtoken');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { getDbConnection, initializeDatabase } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_key_change_in_production';
 
-// System prompts for AI agents (duplicated from frontend for backend security/enforcement)
+// Gemini API Key from .env
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'dummy_key');
+
 const SYSTEM_PROMPTS = {
   orchestrator: `You are the Master Orchestrator of a real estate Growth OS. You coordinate 7 specialized AI agents: Ad Strategist, Content Creator, Market Research, Lead Qualifier, CRM Follow-up, Sales Closer, and Analytics AI. Route user queries to the right department. Be concise, strategic, and decisive. When appropriate, explain which agent you're engaging and why. Focus on Indian real estate market context.`,
   marketing: `You are an expert real estate digital marketing strategist specializing in the Indian market. You create data-driven ad campaigns for real estate builders on Meta, Google, Instagram, and YouTube. You analyze campaign performance, generate compelling ad copy, suggest budget allocation, and identify competitor strategies. Always output structured recommendations with specific metrics and actionable next steps. Respond with ad variants, targeting suggestions, and performance benchmarks.`,
@@ -25,11 +28,12 @@ const SYSTEM_PROMPTS = {
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(morgan('combined')); // Request logging
 
-// Rate Limiting (5 requests per minute)
+// Rate Limiting (20 requests per minute per IP)
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 5,
+  max: 20,
   message: { error: 'Rate limit exceeded. Please try again in a minute.' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -54,15 +58,28 @@ app.get('/api/status', (req, res) => {
   res.json({ status: 'online', message: 'API Proxy is running' });
 });
 
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime(), version: '1.0.0' });
+});
+
 // Initialize Database on startup
 initializeDatabase().catch(console.error);
 
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
-  // Basic hardcoded auth for demo
-  if (username === 'admin' && password === 'admin') {
+  // Use PIN_CODE from env for simple auth
+  const pin = process.env.PIN_CODE || 'admin';
+
+  // Basic hardcoded auth for demo + roles
+  if (username === 'admin' && password === pin) {
     const token = jwt.sign({ username: 'admin', role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
-    res.json({ token });
+    res.json({ token, role: 'admin' });
+  } else if (username === 'manager' && password === pin) {
+    const token = jwt.sign({ username: 'manager', role: 'manager' }, JWT_SECRET, { expiresIn: '24h' });
+    res.json({ token, role: 'manager' });
+  } else if (username === 'sales' && password === pin) {
+    const token = jwt.sign({ username: 'sales', role: 'sales' }, JWT_SECRET, { expiresIn: '24h' });
+    res.json({ token, role: 'sales' });
   } else {
     res.status(401).json({ error: 'Invalid credentials' });
   }
@@ -119,7 +136,7 @@ app.put('/api/leads/:id/stage', authenticateToken, async (req, res) => {
   }
 });
 
-// --- Chat Endpoint ---
+// --- Chat Endpoint (Gemini Streaming) ---
 
 app.post('/api/chat', apiLimiter, authenticateToken, async (req, res) => {
   try {
@@ -131,38 +148,39 @@ app.post('/api/chat', apiLimiter, authenticateToken, async (req, res) => {
 
     const systemPrompt = SYSTEM_PROMPTS[agentType] || SYSTEM_PROMPTS.orchestrator;
 
-    // Construct messages array
-    const messages = [
-      { role: 'system', content: systemPrompt },
-      ...(history || []),
-      { role: 'user', content: message }
-    ];
-
-    // Connect to local Ollama instance (or Claude API in production)
-    const OLLAMA_BASE = process.env.OLLAMA_BASE || 'http://127.0.0.1:11434';
-
-    const response = await axios({
-      method: 'post',
-      url: `${OLLAMA_BASE}/api/chat`,
-      data: {
-        model: model || 'llama3.2',
-        messages,
-        stream: true,
-        options: { temperature: 0.7 }
-      },
-      responseType: 'stream'
+    // Prepare Gemini model
+    const geminiModel = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction: systemPrompt
     });
 
-    res.setHeader('Content-Type', 'application/json');
-    response.data.pipe(res);
+    // Format history for Gemini
+    const chatHistory = (history || []).map(msg => ({
+      role: msg.role === 'user' ? 'user' : 'model',
+      parts: [{ text: msg.content }]
+    }));
+
+    const chat = geminiModel.startChat({
+      history: chatHistory
+    });
+
+    const result = await chat.sendMessageStream(message);
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    for await (const chunk of result.stream) {
+      const chunkText = chunk.text();
+      res.write(`data: ${JSON.stringify({ content: chunkText })}\n\n`);
+    }
+
+    res.write('data: [DONE]\n\n');
+    res.end();
 
   } catch (error) {
     console.error('Chat API Error:', error.message);
-    if (error.code === 'ECONNREFUSED') {
-      res.status(503).json({ error: 'Local AI service (Ollama) is not running.' });
-    } else {
-      res.status(500).json({ error: 'Failed to process chat request' });
-    }
+    res.status(500).json({ error: 'Failed to process chat request' });
   }
 });
 

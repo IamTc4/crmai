@@ -91,12 +91,12 @@
 
     <form id="login-form">
         <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Username (admin/manager/sales)</label>
             <input type="text" id="username" value="admin" required>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" value="admin" required>
+            <label for="password">PIN Code</label>
+            <input type="password" id="password" value="" required>
         </div>
         <button type="submit" class="btn-login" id="login-btn">Sign In</button>
         <div id="error-msg" class="error-msg">Invalid credentials.</div>
@@ -127,6 +127,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
         if (res.ok && data.token) {
             localStorage.setItem('jwt_token', data.token);
+            localStorage.setItem('user_role', data.role);
             window.location.href = 'index.html';
         } else {
             err.textContent = data.error || 'Authentication failed';

@@ -33,22 +33,15 @@ const SYSTEM_PROMPTS = {
   analytics: `You are a real estate performance analytics AI. Analyze campaign data, lead funnels, sales conversion metrics, and ROI across channels. Generate insights on what's working, what's not, and where to reallocate budget. Produce weekly performance narratives, identify anomalies, and make data-backed recommendations. Reference specific metrics: CPL, conversion rates, ROAS, lead velocity, and pipeline value.`,
 };
 
-class OllamaConnector {
+class APIConnector {
   constructor() {
-    this.currentModel = localStorage.getItem('ollama_model') || 'llama3.2';
     this.isOnline = false;
     this.checkStatus();
   }
 
-  setModel(modelId) {
-    this.currentModel = modelId;
-    localStorage.setItem('ollama_model', modelId);
-    document.querySelectorAll('.model-select').forEach(el => el.value = modelId);
-  }
-
   async checkStatus() {
     try {
-      const res = await fetch(`${PROXY_BASE}/api/status`, { signal: AbortSignal.timeout(3000) });
+      const res = await fetch(`${PROXY_BASE}/api/health`, { signal: AbortSignal.timeout(3000) });
       this.isOnline = res.ok;
     } catch {
       this.isOnline = false;
@@ -82,7 +75,6 @@ class OllamaConnector {
         },
         body: JSON.stringify({
           agentType: agentType,
-          model: this.currentModel,
           message: userMessage,
           history: conversationHistory
         })
@@ -106,19 +98,27 @@ class OllamaConnector {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
+
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
-        buffer = lines.pop();
+        buffer = lines.pop(); // keep last incomplete line
 
         for (const line of lines) {
           if (!line.trim()) continue;
-          try {
-            const json = JSON.parse(line);
-            if (json.message?.content) {
-              yield { type: 'chunk', text: json.message.content };
+          if (line.startsWith('data: [DONE]')) {
+             yield { type: 'done' };
+             return;
+          }
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.substring(6));
+              if (data.content) {
+                yield { type: 'chunk', text: data.content };
+              }
+            } catch (e) {
+              console.error("Error parsing SSE JSON:", e);
             }
-            if (json.done) yield { type: 'done' };
-          } catch { /* skip invalid JSON */ }
+          }
         }
       }
     } catch (err) {
@@ -137,8 +137,8 @@ class OllamaConnector {
 }
 
 // Global instance
-const ollama = new OllamaConnector();
-const apiConnector = ollama; // alias for compatibility
+const apiConnector = new APIConnector();
+const ollama = apiConnector; // alias for compatibility
 
 // ── Chat Manager ────────────────────────────────────────────────────
 class ChatManager {
