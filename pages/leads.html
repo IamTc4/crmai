@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/agent.css">
   <link rel="stylesheet" href="../assets/css/dashboard.css">
-  <script src="../assets/js/ollama.js"></script>
+  <script src="../assets/js/api.js"></script>
   <script src="../assets/js/app.js"></script>
   <script src="../assets/js/agents/lead-qualification.js"></script>
 </head>
@@ -56,6 +56,7 @@
     <main class="main">
       <header class="topbar">
         <div class="topbar-left">
+            <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
           <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
           <div class="dept-label">
             <div class="dept-dot" style="background:var(--dept-leads); box-shadow:0 0 8px var(--dept-leads)"></div>
@@ -121,47 +122,33 @@
             </div>
           </div>
 
-          <!-- Live Feed & Scoring -->
+          <!-- Manual Intake Form -->
           <div class="agent-side-panel">
-            <div class="card">
-              <h3 class="mb-3 font-semibold text-sm">Live Intake Feed</h3>
-              <div class="flex-col gap-2">
-
-                <div class="p-2 border border-border rounded flex justify-between items-center bg-hover">
-                  <div>
-                    <div class="text-sm font-bold text-primary">Arjun Desai</div>
-                    <div class="text-xs text-muted">Source: Google Search</div>
-                  </div>
-                  <div class="flex-col items-end">
-                    <span class="badge badge-hot">Score: 92</span>
-                    <span class="text-xs text-success mt-1">Route to Sales</span>
-                  </div>
-                </div>
-
-                <div class="p-2 border border-border rounded flex justify-between items-center bg-hover">
-                  <div>
-                    <div class="text-sm font-bold text-primary">Neha S.</div>
-                    <div class="text-xs text-muted">Source: Meta Ad</div>
-                  </div>
-                  <div class="flex-col items-end">
-                    <span class="badge badge-warm">Score: 65</span>
-                    <span class="text-xs text-warning mt-1">Add to Drip</span>
-                  </div>
-                </div>
-
-                <div class="p-2 border border-border rounded flex justify-between items-center bg-hover opacity-50">
-                  <div>
-                    <div class="text-sm font-bold text-muted">Xyz Test</div>
-                    <div class="text-xs text-muted">Source: Direct</div>
-                  </div>
-                  <div class="flex-col items-end">
-                    <span class="badge badge-cold">Score: 12</span>
-                    <span class="text-xs text-danger mt-1">Blocked Bot</span>
-                  </div>
-                </div>
-
+            <form class="card" id="manual-lead-form" onsubmit="submitLead(event)">
+              <h3 class="mb-3 font-semibold text-sm">Manual Lead Intake</h3>
+              <div class="field mb-2">
+                <label>Lead Name <span class="text-danger">*</span></label>
+                <input type="text" id="lead-name" required placeholder="Full Name">
               </div>
-            </div>
+              <div class="field mb-2">
+                <label>Project Interest</label>
+                <input type="text" id="lead-project" placeholder="e.g. Lodha Amara">
+              </div>
+              <div class="field mb-2">
+                <label>Source</label>
+                <select id="lead-source">
+                  <option value="Walk-in">Walk-in</option>
+                  <option value="Referral">Referral</option>
+                  <option value="Website">Website</option>
+                  <option value="Phone Call">Phone Call</option>
+                </select>
+              </div>
+              <div class="field mb-3">
+                <label>Estimated Value (₹)</label>
+                <input type="number" id="lead-value" placeholder="e.g. 15000000">
+              </div>
+              <button type="submit" class="btn btn-primary w-full justify-center" style="background: var(--dept-leads);" id="submit-lead-btn">Add to CRM & Score</button>
+            </form>
 
             <div class="card">
               <h3 class="mb-3 font-semibold text-sm">Behavioral Scoring Rules</h3>

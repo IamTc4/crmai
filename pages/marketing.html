@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/agent.css">
   <link rel="stylesheet" href="../assets/css/dashboard.css">
-  <script src="../assets/js/ollama.js"></script>
+  <script src="../assets/js/api.js"></script>
   <script src="../assets/js/app.js"></script>
   <script src="../assets/js/agents/ad-strategist.js"></script>
 </head>
@@ -58,6 +58,7 @@
     <main class="main">
       <header class="topbar">
         <div class="topbar-left">
+            <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
           <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
           <div class="dept-label">
             <div class="dept-dot" style="background:var(--dept-marketing); box-shadow:0 0 8px var(--dept-marketing)"></div>
@@ -145,19 +146,19 @@
               </div>
             </div>
 
-            <div class="card">
+            <form class="card" id="ad-spy-form" onsubmit="event.preventDefault(); runAdSpy();">
               <h3 class="mb-3 font-semibold text-sm">Competitor Ad Spy</h3>
               <div class="field mb-3">
-                <label>Target Competitor</label>
+                <label>Target Competitor <span class="text-danger">*</span></label>
                 <div class="flex gap-2">
-                  <input type="text" placeholder="e.g. Lodha Group, Godrej Properties">
-                  <button class="btn btn-primary btn-sm" style="background: var(--dept-marketing);" onclick="toast('Scraping competitor creatives...','info')">Spy</button>
+                  <input type="text" id="spy-target" required minlength="2" placeholder="e.g. Lodha Group">
+                  <button type="submit" class="btn btn-primary btn-sm" style="background: var(--dept-marketing);">Spy</button>
                 </div>
               </div>
-              <div class="text-xs text-muted text-center p-4 border" style="border:1px dashed var(--border); border-radius:var(--radius-sm)">
+              <div id="spy-results" class="text-xs text-muted text-center p-4 border" style="border:1px dashed var(--border); border-radius:var(--radius-sm)">
                 Enter a competitor to pull active creatives from Meta Ad Library.
               </div>
-            </div>
+            </form>
 
             <div class="card">
               <h3 class="mb-3 font-semibold text-sm">Budget Optimizer</h3>

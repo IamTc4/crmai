@@ -11,10 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function runAnalysis() {
-    const loc = document.getElementById('research-location').value || 'a general area';
+    const loc = document.getElementById('research-location').value;
     const seg = document.getElementById('research-segment').value;
+    if (!loc || !seg) return; // Handled by HTML5 validation, but good practice
+
     if (window.chatMgr) {
         window.chatMgr.useQuickPrompt(`Please run a comprehensive competitor analysis for the ${seg} segment in ${loc}. Include estimated per-sqft pricing and current supply vs demand.`);
+        setTimeout(() => document.getElementById('chat-send').click(), 100);
     }
 }
 // Attach to window so it's globally available

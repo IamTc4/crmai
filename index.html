@@ -7,9 +7,10 @@
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/agent.css">
   <link rel="stylesheet" href="assets/css/dashboard.css">
-  <script src="assets/js/ollama.js"></script>
+  <script src="assets/js/api.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/orchestrator.js"></script>
+  <script src="assets/js/analytics.js"></script>
 </head>
 <body>
   <div class="layout">
@@ -58,6 +59,7 @@
     <main class="main">
       <header class="topbar">
         <div class="topbar-left">
+            <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
           <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
           <div class="dept-label">
             <div class="dept-dot"></div>
@@ -79,20 +81,20 @@
             <div class="kpi-icon">📢</div>
           </div>
           <div class="kpi-card" style="--kpi-color: var(--dept-leads)">
-            <div class="kpi-label">Leads Today</div>
-            <div class="kpi-value">48</div>
+            <div class="kpi-label">Total Leads (7d)</div>
+            <div class="kpi-value" id="kpi-total-leads">48</div>
             <div class="kpi-change kpi-up">↑ 15% vs avg</div>
             <div class="kpi-icon">🎯</div>
           </div>
           <div class="kpi-card" style="--kpi-color: var(--dept-sales)">
-            <div class="kpi-label">Site Visits Scheduled</div>
-            <div class="kpi-value">8</div>
+            <div class="kpi-label">Revenue Pipeline</div>
+            <div class="kpi-value" id="kpi-revenue">₹2.4Cr</div>
             <div class="kpi-change kpi-down">↓ 1 from yesterday</div>
-            <div class="kpi-icon">📅</div>
+            <div class="kpi-icon">🏢</div>
           </div>
           <div class="kpi-card" style="--kpi-color: var(--dept-analytics)">
             <div class="kpi-label">Avg. CPL (₹)</div>
-            <div class="kpi-value">₹340</div>
+            <div class="kpi-value" id="kpi-cpl">₹340</div>
             <div class="kpi-change kpi-up">↓ 5% (Improving)</div>
             <div class="kpi-icon">💸</div>
           </div>

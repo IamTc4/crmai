@@ -13,13 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
 function generateQuickContent() {
     const type = document.getElementById('content-type').value;
     const topic = document.getElementById('content-topic').value;
-    if (!topic) {
-        if (typeof toast === 'function') toast('Please enter a topic', 'warning');
-        return;
-    }
-    if (window.chatMgr) {
-        window.chatMgr.useQuickPrompt(`Write a ${type} about: ${topic}. Include a strong hook, body, and CTA.`);
-    }
+    const btn = document.getElementById('generate-content-btn');
+
+    if (!type || !topic) return;
+
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div> Generating...';
+
+    // Small delay to make it feel like the form processed before chat takeover
+    setTimeout(() => {
+        if (window.chatMgr) {
+            window.chatMgr.useQuickPrompt(`Please write a highly engaging ${type} focusing on the following topic/angle: "${topic}". Ensure the tone is aspirational and includes a clear hook and call-to-action.`);
+            setTimeout(() => document.getElementById('chat-send').click(), 100);
+        }
+        btn.disabled = false;
+        btn.innerHTML = 'Generate Script';
+        document.getElementById('quick-content-form').reset();
+    }, 500);
 }
-// Attach to window so it's globally available for the onclick handler
 window.generateQuickContent = generateQuickContent;
