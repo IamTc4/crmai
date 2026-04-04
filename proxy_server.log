@@ -1,6 +1,0 @@
-
-> app@1.0.0 start
-> node proxy/server.js
-
-◇ injecting env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
-🚀 Proxy server running on port 3000

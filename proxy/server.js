@@ -4,6 +4,7 @@ const cors = require('cors');
 const axios = require('axios');
 const rateLimit = require('express-rate-limit');
 const jwt = require('jsonwebtoken');
+const { getDbConnection, initializeDatabase } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -53,6 +54,9 @@ app.get('/api/status', (req, res) => {
   res.json({ status: 'online', message: 'API Proxy is running' });
 });
 
+// Initialize Database on startup
+initializeDatabase().catch(console.error);
+
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   // Basic hardcoded auth for demo
@@ -63,6 +67,59 @@ app.post('/api/login', (req, res) => {
     res.status(401).json({ error: 'Invalid credentials' });
   }
 });
+
+// --- CRM Endpoints ---
+
+// Get all leads
+app.get('/api/leads', authenticateToken, async (req, res) => {
+  try {
+    const db = await getDbConnection();
+    const leads = await db.all('SELECT * FROM leads ORDER BY created_at DESC');
+    res.json(leads);
+  } catch (error) {
+    console.error('Error fetching leads:', error);
+    res.status(500).json({ error: 'Failed to fetch leads' });
+  }
+});
+
+// Add a new lead
+app.post('/api/leads', authenticateToken, async (req, res) => {
+  try {
+    const { name, project, source, value, score, stage } = req.body;
+    if (!name || !stage) return res.status(400).json({ error: 'Name and stage are required' });
+
+    const db = await getDbConnection();
+    const result = await db.run(
+      `INSERT INTO leads (name, project, source, value, score, stage) VALUES (?, ?, ?, ?, ?, ?)`,
+      [name, project || '', source || 'Direct', value || 0, score || 50, stage]
+    );
+    res.status(201).json({ id: result.lastID, message: 'Lead added successfully' });
+  } catch (error) {
+    console.error('Error adding lead:', error);
+    res.status(500).json({ error: 'Failed to add lead' });
+  }
+});
+
+// Update lead stage
+app.put('/api/leads/:id/stage', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { stage } = req.body;
+    if (!stage) return res.status(400).json({ error: 'Stage is required' });
+
+    const db = await getDbConnection();
+    await db.run(
+      `UPDATE leads SET stage = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
+      [stage, id]
+    );
+    res.json({ message: 'Lead stage updated successfully' });
+  } catch (error) {
+    console.error('Error updating lead stage:', error);
+    res.status(500).json({ error: 'Failed to update lead stage' });
+  }
+});
+
+// --- Chat Endpoint ---
 
 app.post('/api/chat', apiLimiter, authenticateToken, async (req, res) => {
   try {
