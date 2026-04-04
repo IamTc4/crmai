@@ -144,13 +144,14 @@
               </div>
             </div>
 
-            <div class="card">
+            <form class="card" id="comparison-form" onsubmit="event.preventDefault(); genComparison();">
               <h3 class="mb-3 font-semibold text-sm">Generate Comparison Card</h3>
               <div class="field mb-3">
-                <input type="text" id="comp-name" placeholder="Competitor Project Name">
+                <label>Competitor Project <span class="text-danger">*</span></label>
+                <input type="text" id="comp-name" required minlength="2" placeholder="e.g. Sobha City">
               </div>
-              <button class="btn btn-ghost w-full justify-center" onclick="genComparison()">Auto-Generate vs Competitor</button>
-            </div>
+              <button type="submit" class="btn btn-ghost w-full justify-center" id="gen-comp-btn">Auto-Generate vs Competitor</button>
+            </form>
           </div>
         </div>
       </div>

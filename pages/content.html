@@ -136,11 +136,12 @@
 
           <!-- Quick Generation Tools -->
           <div class="agent-side-panel">
-            <div class="card">
+            <form class="card" id="quick-content-form" onsubmit="event.preventDefault(); generateQuickContent();">
               <h3 class="mb-3 font-semibold text-sm">Quick Script Generator</h3>
               <div class="field mb-3">
-                <label>Content Type</label>
-                <select id="content-type">
+                <label>Content Type <span class="text-danger">*</span></label>
+                <select id="content-type" required>
+                  <option value="">Select Type</option>
                   <option value="Instagram Reel">Instagram Reel (60s)</option>
                   <option value="Email Newsletter">Email Newsletter</option>
                   <option value="LinkedIn Post">LinkedIn Post</option>
@@ -148,11 +149,11 @@
                 </select>
               </div>
               <div class="field mb-3">
-                <label>Topic / Angle</label>
-                <input type="text" id="content-topic" placeholder="e.g. Club house amenities tour">
+                <label>Topic / Angle <span class="text-danger">*</span></label>
+                <input type="text" id="content-topic" required placeholder="e.g. Club house amenities tour">
               </div>
-              <button class="btn btn-primary w-full justify-center" style="background: var(--dept-content);" onclick="generateQuickContent()">Generate Script</button>
-            </div>
+              <button type="submit" class="btn btn-primary w-full justify-center" style="background: var(--dept-content);" id="generate-content-btn">Generate Script</button>
+            </form>
 
             <div class="card">
               <h3 class="mb-3 font-semibold text-sm">Trending Hooks (Real Estate)</h3>
