@@ -25,10 +25,15 @@ const SYSTEM_PROMPTS = {
   analytics: `You are a real estate performance analytics AI. Analyze campaign data, lead funnels, sales conversion metrics, and ROI across channels. Generate insights on what's working, what's not, and where to reallocate budget. Produce weekly performance narratives, identify anomalies, and make data-backed recommendations. Reference specific metrics: CPL, conversion rates, ROAS, lead velocity, and pipeline value.`,
 };
 
+const path = require('path');
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(morgan('combined')); // Request logging
+
+// Serve frontend static files from the root directory
+app.use(express.static(path.join(__dirname, '../')));
 
 // Rate Limiting (20 requests per minute per IP)
 const apiLimiter = rateLimit({
@@ -184,6 +189,7 @@ app.post('/api/chat', apiLimiter, authenticateToken, async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Proxy server running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on port ${PORT} (0.0.0.0)`);
+  console.log(`Frontend and API are both served from this port.`);
 });

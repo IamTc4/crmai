@@ -1,7 +1,5 @@
 // Global Configuration
 window.CONFIG = {
-    // Change this to the IP address of the machine running the proxy server on your LAN.
-    // E.g., 'http://192.168.1.100:3000'
-    // If running on the same machine, leave as localhost.
-    API_BASE: 'http://localhost:3000'
+    // API_BASE will dynamically resolve to the host serving the file (e.g., the public demo link, or LAN IP).
+    API_BASE: window.location.origin
 };
