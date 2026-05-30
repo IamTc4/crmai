@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marketing Engine - Growth OS</title>
+  <title>Fabrication & Logistics - Growth OS</title>
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/agent.css">
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/app.js"></script>
-  <script src="../assets/js/agents/ad-strategist.js"></script>
+  <!-- <script src="../assets/js/agents/fabrication-ai.js"></script> -->
 </head>
 <body>
   <div class="layout">
@@ -30,7 +30,7 @@
 
       <div class="nav-section">
         <div class="nav-section-label">Departments</div>
-        <a href="marketing.html" class="nav-item active" style="--dept-rgb: 37,99,235;">
+        <a href="marketing.html" class="nav-item">
           <div class="nav-icon">📢</div> Marketing Engine
         </a>
         <a href="content.html" class="nav-item">
@@ -57,7 +57,7 @@
         <a href="safety.html" class="nav-item">
           <div class="nav-icon">🦺</div> Safety & Compliance
         </a>
-        <a href="fabrication.html" class="nav-item">
+        <a href="fabrication.html" class="nav-item active" style="--dept-rgb: 234, 88, 12;">
           <div class="nav-icon">🏭</div> Fabrication
         </a>
         <a href="workforce.html" class="nav-item">
@@ -79,8 +79,8 @@
             <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
           <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
           <div class="dept-label">
-            <div class="dept-dot" style="background:var(--dept-marketing); box-shadow:0 0 8px var(--dept-marketing)"></div>
-            Marketing Engine
+            <div class="dept-dot" style="background:var(--dept-fabrication); box-shadow:0 0 8px var(--dept-fabrication)"></div>
+            Fabrication & Logistics
           </div>
         </div>
         <div class="topbar-right" id="model-selector-container">
@@ -90,102 +90,112 @@
 
       <div class="page-content">
         <div class="section-header">
-          <h1 class="section-title"><div class="icon" style="--accent: 37,99,235;">📢</div> Ad Strategist AI</h1>
+          <h1 class="section-title"><div class="icon" style="--accent: 234, 88, 12;">🏭</div> Fabrication AI</h1>
         </div>
 
         <div class="agent-layout">
           <!-- Ad Strategist Chat -->
           <div class="agent-chat-panel">
             <div class="agent-chat-header">
-              <div class="agent-avatar" style="--accent: #2563EB; --accent2: #3B82F6;">📢</div>
+              <div class="agent-avatar" style="--accent: #ea580c; --accent2: #f97316;">🏭</div>
               <div class="agent-info">
-                <h4>Ad Strategist AI</h4>
-                <p>Campaign generation & optimization</p>
+                <h4>Fabrication AI</h4>
+                <p>Production & dispatch tracking</p>
               </div>
             </div>
 
             <div class="chat-messages" id="chat-container">
-              <div class="system-prompt-badge" style="background:rgba(37,99,235,0.15); border-color:rgba(37,99,235,0.25); color:#60A5FA;">
-                ⚙️ System Prompt: Indian real estate marketing strategist. Focus on Meta/Google ads, clear metrics, and structured ad copies.
+              <div class="system-prompt-badge" style="background:rgba(234, 88, 12, 0.15); border-color:rgba(234, 88, 12, 0.25); color:#f97316;">
+                ⚙️ System Prompt: Fabrication and logistics manager. Focus on BOQ linkage, production readiness, and dispatch schedules.
               </div>
               <div class="msg ai">
                 <div class="msg-avatar">🤖</div>
-                <div class="msg-bubble">Hello! I am ready to generate Meta/Google ad campaigns, analyze performance, or spy on competitor strategies. What are we building today?</div>
+                <div class="msg-bubble">Hello! I am tracking fabrication outputs and logistics. Ask me about BOQ readiness, material dispatches, or production timelines.</div>
               </div>
             </div>
 
             <div class="chat-input-area">
               <div class="quick-prompts">
-                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Generate 3 Meta ad variants for a luxury 3BHK project in Bandra, Mumbai targeting HNIs. Budget ₹50,000/day.')">Generate Luxury Ads</button>
-                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Analyze why our CPL on Google Ads for the affordable housing project in Pune increased by 20% this week.')">Analyze CPL Spike</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Check the dispatch schedule for Skyline Tower A glass panels.')">Check Dispatch</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Generate a production progress report against the current BOQ.')">Production Report</button>
               </div>
               <div class="chat-input-row">
-                <textarea id="chat-input" class="chat-input" placeholder="Ask Ad Strategist AI..."></textarea>
-                <button id="chat-send" class="chat-send-btn" style="background: var(--dept-marketing);">➤</button>
+                <textarea id="chat-input" class="chat-input" placeholder="Ask Fabrication AI..."></textarea>
+                <button id="chat-send" class="chat-send-btn" style="background: var(--dept-fabrication);">➤</button>
               </div>
             </div>
           </div>
 
           <!-- Quick Actions & Visuals -->
-          <div class="agent-side-panel">
+                    <div class="agent-side-panel">
             <div class="card">
-              <h3 class="mb-3 font-semibold text-sm">Active Campaigns Overview</h3>
+              <h3 class="mb-3 font-semibold text-sm">Production Timelines</h3>
               <div class="table-wrap">
                 <table>
                   <thead>
                     <tr>
-                      <th>Campaign</th>
-                      <th>Spend</th>
-                      <th>CPL</th>
+                      <th>Batch</th>
+                      <th>Output %</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td class="font-semibold text-primary">Meta - Luxury 3BHK</td>
-                      <td>₹45K</td>
-                      <td class="text-success">₹850</td>
+                      <td class="font-semibold text-primary">Steel Frames B2</td>
+                      <td class="text-success">90%</td>
                       <td><span class="live-dot"></span> Active</td>
                     </tr>
                     <tr>
-                      <td class="font-semibold text-primary">Google Search - Brand</td>
-                      <td>₹12K</td>
-                      <td class="text-success">₹420</td>
-                      <td><span class="live-dot"></span> Active</td>
+                      <td class="font-semibold text-primary">Glass Panels (Pune)</td>
+                      <td class="text-warning">45%</td>
+                      <td>⚠️ Delayed</td>
                     </tr>
                     <tr>
-                      <td class="font-semibold text-primary">Insta Reels - Walkthrough</td>
-                      <td>₹28K</td>
-                      <td class="text-danger">₹1,200</td>
-                      <td>⚠️ Paused</td>
+                      <td class="font-semibold text-primary">Pre-cast Slabs</td>
+                      <td class="text-success">100%</td>
+                      <td>Ready</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <form class="card" id="ad-spy-form" onsubmit="event.preventDefault(); runAdSpy();">
-              <h3 class="mb-3 font-semibold text-sm">Competitor Ad Spy</h3>
-              <div class="field mb-3">
-                <label>Target Competitor <span class="text-danger">*</span></label>
-                <div class="flex gap-2">
-                  <input type="text" id="spy-target" required minlength="2" placeholder="e.g. Lodha Group">
-                  <button type="submit" class="btn btn-primary btn-sm" style="background: var(--dept-marketing);">Spy</button>
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Dispatch Schedule</h3>
+              <div class="flex-col gap-2">
+                <div class="flex justify-between items-center p-2 border" style="border:1px solid var(--border); border-radius:var(--radius-sm)">
+                  <div>
+                    <div class="text-sm text-primary">Truck MH-12-AB-1234</div>
+                    <div class="text-xs text-muted">Dest: Skyline A</div>
+                  </div>
+                  <span class="badge badge-success">In Transit</span>
+                </div>
+                <div class="flex justify-between items-center p-2 border" style="border:1px solid var(--border); border-radius:var(--radius-sm)">
+                  <div>
+                    <div class="text-sm text-primary">Truck MH-14-XY-9876</div>
+                    <div class="text-xs text-muted">Dest: Eco Homes</div>
+                  </div>
+                  <span class="badge badge-warning">Loading</span>
                 </div>
               </div>
-              <div id="spy-results" class="text-xs text-muted text-center p-4 border" style="border:1px dashed var(--border); border-radius:var(--radius-sm)">
-                Enter a competitor to pull active creatives from Meta Ad Library.
-              </div>
-            </form>
+            </div>
 
             <div class="card">
-              <h3 class="mb-3 font-semibold text-sm">Budget Optimizer</h3>
-              <div class="progress-bar mb-2"><div class="progress-fill" style="width: 75%; background: var(--dept-marketing);"></div></div>
-              <div class="flex justify-between text-xs text-muted mb-4">
-                <span>Spent: ₹85,000</span>
-                <span>Total: ₹1,00,000 (Daily)</span>
+              <h3 class="mb-3 font-semibold text-sm">Material Readiness vs BOQ</h3>
+              <div class="mb-3">
+                <div class="flex justify-between text-xs mb-1">
+                  <span>Steel Frames (Tower B)</span>
+                  <span class="text-success">Ready</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 100%; background: var(--success);"></div></div>
               </div>
-              <button class="btn btn-ghost w-full justify-center" onclick="window.chatMgr.useQuickPrompt('Reallocate my remaining budget to the best performing campaigns today.')">Auto-Optimize Budget</button>
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span>Aluminum Extrusions</span>
+                  <span class="text-warning">In Production</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 65%; background: var(--warning);"></div></div>
+              </div>
             </div>
           </div>
         </div>

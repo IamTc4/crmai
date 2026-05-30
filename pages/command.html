@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Safety & Compliance - Growth OS</title>
+  <title>AI Command Center - Growth OS</title>
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/agent.css">
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/app.js"></script>
-  <!-- <script src="../assets/js/agents/safety-ai.js"></script> -->
+  <!-- <script src="../assets/js/agents/command-ai.js"></script> -->
 </head>
 <body>
   <div class="layout">
@@ -54,7 +54,7 @@
         <a href="operations.html" class="nav-item">
           <div class="nav-icon">🏗️</div> Site Operations
         </a>
-        <a href="safety.html" class="nav-item active" style="--dept-rgb: 244, 63, 94;">
+        <a href="safety.html" class="nav-item">
           <div class="nav-icon">🦺</div> Safety & Compliance
         </a>
         <a href="fabrication.html" class="nav-item">
@@ -66,7 +66,7 @@
         <a href="quality.html" class="nav-item">
           <div class="nav-icon">🔍</div> Quality Control
         </a>
-        <a href="command.html" class="nav-item">
+        <a href="command.html" class="nav-item active" style="--dept-rgb: 251, 191, 36;">
           <div class="nav-icon">🧠</div> AI Command Center
         </a>
       </div>
@@ -79,8 +79,8 @@
             <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
           <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
           <div class="dept-label">
-            <div class="dept-dot" style="background:var(--dept-safety); box-shadow:0 0 8px var(--dept-safety)"></div>
-            Safety & Compliance
+            <div class="dept-dot" style="background:var(--dept-command); box-shadow:0 0 8px var(--dept-command)"></div>
+            AI Command Center
           </div>
         </div>
         <div class="topbar-right" id="model-selector-container">
@@ -90,38 +90,38 @@
 
       <div class="page-content">
         <div class="section-header">
-          <h1 class="section-title"><div class="icon" style="--accent: 244, 63, 94;">🦺</div> Safety AI</h1>
+          <h1 class="section-title"><div class="icon" style="--accent: 251, 191, 36;">🧠</div> Executive AI</h1>
         </div>
 
         <div class="agent-layout">
           <!-- Ad Strategist Chat -->
           <div class="agent-chat-panel">
             <div class="agent-chat-header">
-              <div class="agent-avatar" style="--accent: #f43f5e; --accent2: #fb7185;">🦺</div>
+              <div class="agent-avatar" style="--accent: #fbbf24; --accent2: #fcd34d;">🧠</div>
               <div class="agent-info">
-                <h4>Safety AI</h4>
-                <p>Compliance & inspections</p>
+                <h4>Executive AI</h4>
+                <p>Predictive intelligence & forecasting</p>
               </div>
             </div>
 
             <div class="chat-messages" id="chat-container">
-              <div class="system-prompt-badge" style="background:rgba(244, 63, 94, 0.15); border-color:rgba(244, 63, 94, 0.25); color:#fb7185;">
-                ⚙️ System Prompt: Site safety and compliance officer. Focus on safety checklists, hazard reporting, and regulatory adherence.
+              <div class="system-prompt-badge" style="background:rgba(251, 191, 36, 0.15); border-color:rgba(251, 191, 36, 0.25); color:#fbbf24;">
+                ⚙️ System Prompt: AI command center executive. Focus on predictive delay detection, operational forecasting, and strategic optimization.
               </div>
               <div class="msg ai">
                 <div class="msg-avatar">🤖</div>
-                <div class="msg-bubble">Hello! I am ready to assist with safety checklists, incident logging, and compliance audits. How can we ensure a safe site today?</div>
+                <div class="msg-bubble">Hello! I am monitoring the entire operational ecosystem. I can predict delays, optimize workforce deployment, or provide regional intelligence.</div>
               </div>
             </div>
 
             <div class="chat-input-area">
               <div class="quick-prompts">
-                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Log a safety incident: Minor fall at Skyline Tower A, no injuries, harness was not secured.')">Log Safety Incident</button>
-                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Generate a daily safety checklist for the crane operation team.')">Crane Checklist</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Analyze historical data and predict the delay risk for the Riverfront project over the next 30 days.')">Predict Delay Risks</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Optimize our workforce deployment across all active sites to minimize labor costs.')">Optimize Workforce</button>
               </div>
               <div class="chat-input-row">
-                <textarea id="chat-input" class="chat-input" placeholder="Ask Safety AI..."></textarea>
-                <button id="chat-send" class="chat-send-btn" style="background: var(--dept-safety);">➤</button>
+                <textarea id="chat-input" class="chat-input" placeholder="Ask Executive AI..."></textarea>
+                <button id="chat-send" class="chat-send-btn" style="background: var(--dept-command); color: #000;">➤</button>
               </div>
             </div>
           </div>
@@ -129,47 +129,31 @@
           <!-- Quick Actions & Visuals -->
                     <div class="agent-side-panel">
             <div class="card">
-              <h3 class="mb-3 font-semibold text-sm">Safety Compliance Score</h3>
-              <div class="flex justify-center items-center p-4">
-                <div class="score-ring">
-                  <svg viewBox="0 0 36 36" width="100%" height="100%">
-                    <path fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    <path fill="none" stroke="var(--success)" stroke-width="3" stroke-dasharray="92, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                  </svg>
-                  <div class="score-ring-text">
-                    <span>92<span style="font-size:0.6rem">%</span></span>
-                    <span class="score-ring-label">Overall</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="card">
-              <h3 class="mb-3 font-semibold text-sm">Recent Incidents</h3>
+              <h3 class="mb-3 font-semibold text-sm">Predictive Delay Risks</h3>
               <div class="table-wrap">
                 <table>
                   <thead>
                     <tr>
-                      <th>Severity</th>
-                      <th>Location</th>
-                      <th>Status</th>
+                      <th>Project</th>
+                      <th>Risk Factor</th>
+                      <th>Probability</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td><span class="badge badge-warning">Medium</span></td>
-                      <td class="font-semibold text-primary">Skyline Tower A</td>
-                      <td>Investigating</td>
-                    </tr>
-                    <tr>
-                      <td><span class="badge badge-danger">High</span></td>
                       <td class="font-semibold text-primary">Riverfront Phase 2</td>
-                      <td class="text-success">Resolved</td>
+                      <td>Material Shortage (Glass)</td>
+                      <td class="text-danger font-bold">85%</td>
                     </tr>
                     <tr>
-                      <td><span class="badge badge-info">Low</span></td>
+                      <td class="font-semibold text-primary">Skyline Tower A</td>
+                      <td>Labor Attrition</td>
+                      <td class="text-warning font-bold">42%</td>
+                    </tr>
+                    <tr>
                       <td class="font-semibold text-primary">Eco Homes Pune</td>
-                      <td>Resolved</td>
+                      <td>Weather (Monsoon)</td>
+                      <td class="text-success font-bold">12%</td>
                     </tr>
                   </tbody>
                 </table>
@@ -177,27 +161,40 @@
             </div>
 
             <div class="card">
-              <h3 class="mb-3 font-semibold text-sm">Checklist Status</h3>
-              <div class="mb-3">
-                <div class="flex justify-between text-xs mb-1">
-                  <span>Morning Site Inspection</span>
-                  <span class="text-success">Completed</span>
+              <h3 class="mb-3 font-semibold text-sm">AI Optimization Insights</h3>
+              <div class="flex-col gap-2">
+                <div class="flex justify-between items-center p-2 border" style="border:1px solid var(--border); border-radius:var(--radius-sm)">
+                  <div>
+                    <div class="text-sm text-primary">Reallocate 15 workers to Skyline</div>
+                    <div class="text-xs text-muted">Impact: Saves 3 days</div>
+                  </div>
+                  <span class="badge badge-info">Action</span>
                 </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%; background: var(--success);"></div></div>
+                <div class="flex justify-between items-center p-2 border" style="border:1px solid var(--border); border-radius:var(--radius-sm)">
+                  <div>
+                    <div class="text-sm text-primary">Expedite cement dispatch</div>
+                    <div class="text-xs text-muted">Impact: Avoids bottleneck</div>
+                  </div>
+                  <span class="badge badge-info">Action</span>
+                </div>
               </div>
+            </div>
+
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Regional Performance (AI Scored)</h3>
               <div class="mb-3">
                 <div class="flex justify-between text-xs mb-1">
-                  <span>Equipment Safety Audit</span>
-                  <span class="text-warning">In Progress</span>
+                  <span>Pune Region</span>
+                  <span class="text-success">9.4/10</span>
                 </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 60%; background: var(--warning);"></div></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 94%; background: var(--success);"></div></div>
               </div>
               <div>
                 <div class="flex justify-between text-xs mb-1">
-                  <span>Worker PPE Verification</span>
-                  <span class="text-danger">Pending</span>
+                  <span>Mumbai Region</span>
+                  <span class="text-warning">7.2/10</span>
                 </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 15%; background: var(--danger);"></div></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 72%; background: var(--warning);"></div></div>
               </div>
             </div>
           </div>
