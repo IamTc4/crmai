@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Operations - Growth OS</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/agent.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <!-- <script src="../assets/js/agents/operations-ai.js"></script> -->
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">⚡</div>
+        <h2>Growth OS</h2>
+        <p>Real Estate Multi-Agent System</p>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Master</div>
+        <a href="../index.html" class="nav-item">
+          <div class="nav-icon">👑</div> Dashboard
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Departments</div>
+        <a href="marketing.html" class="nav-item">
+          <div class="nav-icon">📢</div> Marketing Engine
+        </a>
+        <a href="content.html" class="nav-item">
+          <div class="nav-icon">✍️</div> Content Engine
+        </a>
+        <a href="research.html" class="nav-item">
+          <div class="nav-icon">📊</div> Research Intel
+        </a>
+        <a href="leads.html" class="nav-item">
+          <div class="nav-icon">🎯</div> Lead Generation
+        </a>
+        <a href="crm.html" class="nav-item">
+          <div class="nav-icon">🤝</div> CRM & Follow-up
+        </a>
+        <a href="sales.html" class="nav-item">
+          <div class="nav-icon">💰</div> Sales Conversion
+        </a>
+        <a href="analytics.html" class="nav-item">
+          <div class="nav-icon">📈</div> Performance
+        </a>
+        <a href="operations.html" class="nav-item active" style="--dept-rgb: 14, 165, 233;">
+          <div class="nav-icon">🏗️</div> Site Operations
+        </a>
+        <a href="safety.html" class="nav-item">
+          <div class="nav-icon">🦺</div> Safety & Compliance
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+            <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
+          <button class="btn btn-icon" id="sidebar-toggle" style="display:none;">☰</button>
+          <div class="dept-label">
+            <div class="dept-dot" style="background:var(--dept-operations); box-shadow:0 0 8px var(--dept-operations)"></div>
+            Site Operations
+          </div>
+        </div>
+        <div class="topbar-right" id="model-selector-container">
+          <!-- Model selector will be injected here -->
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div class="section-header">
+          <h1 class="section-title"><div class="icon" style="--accent: 14, 165, 233;">🏗️</div> Operations AI</h1>
+        </div>
+
+        <div class="agent-layout">
+          <!-- Ad Strategist Chat -->
+          <div class="agent-chat-panel">
+            <div class="agent-chat-header">
+              <div class="agent-avatar" style="--accent: #0ea5e9; --accent2: #38bdf8;">🏗️</div>
+              <div class="agent-info">
+                <h4>Operations AI</h4>
+                <p>Project & task management</p>
+              </div>
+            </div>
+
+            <div class="chat-messages" id="chat-container">
+              <div class="system-prompt-badge" style="background:rgba(14, 165, 233, 0.15); border-color:rgba(14, 165, 233, 0.25); color:#38bdf8;">
+                ⚙️ System Prompt: Construction site operations manager. Focus on daily progress, material tracking, and workforce management.
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar">🤖</div>
+                <div class="msg-bubble">Hello! I am ready to assist with project tracking, material dispatches, and daily site reporting. What is our operational focus today?</div>
+              </div>
+            </div>
+
+            <div class="chat-input-area">
+              <div class="quick-prompts">
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Generate a daily site report template for the Phase 2 foundation work.')">Daily Site Report</button>
+                <button class="quick-prompt" onclick="window.chatMgr.useQuickPrompt('Check material status and flag any potential shortages for next week.')">Check Materials</button>
+              </div>
+              <div class="chat-input-row">
+                <textarea id="chat-input" class="chat-input" placeholder="Ask Operations AI..."></textarea>
+                <button id="chat-send" class="chat-send-btn" style="background: var(--dept-operations);">➤</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Visuals -->
+                    <div class="agent-side-panel">
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Active Sites Overview</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Site Name</th>
+                      <th>Status</th>
+                      <th>Completion</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="font-semibold text-primary">Skyline Tower A</td>
+                      <td><span class="live-dot"></span> On Track</td>
+                      <td class="text-success">65%</td>
+                    </tr>
+                    <tr>
+                      <td class="font-semibold text-primary">Riverfront Phase 2</td>
+                      <td>⚠️ Delayed</td>
+                      <td class="text-warning">32%</td>
+                    </tr>
+                    <tr>
+                      <td class="font-semibold text-primary">Eco Homes Pune</td>
+                      <td><span class="live-dot"></span> On Track</td>
+                      <td class="text-success">88%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Task Tracker</h3>
+              <div class="flex-col gap-2">
+                <div class="flex justify-between items-center p-2 border" style="border:1px solid var(--border); border-radius:var(--radius-sm)">
+                  <div>
+                    <div class="text-sm text-primary">Approve Steel Order</div>
+                    <div class="text-xs text-muted">Due: Today</div>
+                  </div>
+                  <span class="badge badge-warning">Pending</span>
+                </div>
+                <div class="flex justify-between items-center p-2 border" style="border:1px solid var(--border); border-radius:var(--radius-sm)">
+                  <div>
+                    <div class="text-sm text-primary">QC Inspection Phase 1</div>
+                    <div class="text-xs text-muted">Due: Tomorrow</div>
+                  </div>
+                  <span class="badge badge-info">Scheduled</span>
+                </div>
+                <div class="flex justify-between items-center p-2 border" style="border:1px solid var(--border); border-radius:var(--radius-sm)">
+                  <div>
+                    <div class="text-sm text-primary">Submit Daily Report</div>
+                    <div class="text-xs text-muted">Due: Yesterday</div>
+                  </div>
+                  <span class="badge badge-success">Completed</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 class="mb-3 font-semibold text-sm">Material Status</h3>
+              <div class="mb-3">
+                <div class="flex justify-between text-xs mb-1">
+                  <span>Cement (Grade 53)</span>
+                  <span class="text-warning">Low Stock</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 25%; background: var(--warning);"></div></div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span>TMT Steel Bars</span>
+                  <span class="text-success">Adequate</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 80%; background: var(--success);"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
